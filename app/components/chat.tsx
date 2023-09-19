@@ -486,13 +486,13 @@ export function ChatActions(props: {
         icon={<PromptIcon />}
       />
 
-      <ChatAction
-        onClick={() => {
-          navigate(Path.Masks);
-        }}
-        text={Locale.Chat.InputActions.Masks}
-        icon={<MaskIcon />}
-      />
+      {/*<ChatAction*/}
+      {/*  onClick={() => {*/}
+      {/*    navigate(Path.Masks);*/}
+      {/*  }}*/}
+      {/*  text={Locale.Chat.InputActions.Masks}*/}
+      {/*  icon={<MaskIcon />}*/}
+      {/*/>*/}
 
       <ChatAction
         text={Locale.Chat.InputActions.Clear}
@@ -509,11 +509,11 @@ export function ChatActions(props: {
         }}
       />
 
-      <ChatAction
-        onClick={() => setShowModelSelector(true)}
-        text={currentModel}
-        icon={<RobotIcon />}
-      />
+      {/*<ChatAction*/}
+      {/*  onClick={() => setShowModelSelector(true)}*/}
+      {/*  text={currentModel}*/}
+      {/*  icon={<RobotIcon />}*/}
+      {/*/>*/}
 
       {showModelSelector && (
         <Selector
