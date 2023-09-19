@@ -36,6 +36,7 @@ const en: LocaleType = {
       CompressedHistory: "Compressed History Memory Prompt",
       Export: "Export All Messages as Markdown",
       Copy: "Copy",
+      Speech: "Convert to audio",
       Stop: "Stop",
       Retry: "Retry",
       Pin: "Pin",

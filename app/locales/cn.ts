@@ -34,6 +34,7 @@ const cn = {
       CompressedHistory: "查看压缩后的历史 Prompt",
       Export: "导出聊天记录",
       Copy: "复制",
+      Speech: "转语音",
       Stop: "停止",
       Retry: "重试",
       Pin: "固定",

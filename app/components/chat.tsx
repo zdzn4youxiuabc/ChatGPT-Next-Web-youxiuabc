@@ -52,7 +52,7 @@ import {
   copyToClipboard,
   selectOrCopy,
   autoGrowTextArea,
-  useMobileScreen,
+  useMobileScreen, SpeechText,
 } from "../utils";
 
 import dynamic from "next/dynamic";
@@ -1186,6 +1186,11 @@ function _Chat() {
                                 text={Locale.Chat.Actions.Pin}
                                 icon={<PinIcon />}
                                 onClick={() => onPinMessage(message)}
+                              />
+                              <ChatAction
+                                  text={Locale.Chat.Actions.Speech}
+                                  icon={<RobotIcon />}
+                                  onClick={() => SpeechText(message.content)}
                               />
                               <ChatAction
                                 text={Locale.Chat.Actions.Copy}
