@@ -31,6 +31,13 @@ const en: LocaleType = {
         SubTitle: "Change the current topic",
       },
     },
+    PromptMessage: {
+      Title: "Hints and sentences",
+      Topic: {
+        Title: "Hints",
+        SubTitle: "Change the current Hints",
+      },
+    },
     Actions: {
       ChatList: "Go To Chat List",
       CompressedHistory: "Compressed History Memory Prompt",

@@ -29,6 +29,13 @@ const cn = {
         SubTitle: "更改当前聊天主题",
       },
     },
+    PromptMessage: {
+      Title: "提示语",
+      Topic: {
+        Title: "提示主题",
+        SubTitle: "更改当前提示语主题",
+      },
+    },
     Actions: {
       ChatList: "查看消息列表",
       CompressedHistory: "查看压缩后的历史 Prompt",

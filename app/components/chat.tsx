@@ -536,6 +536,68 @@ export function ChatActions(props: {
     </div>
   );
 }
+// 提示语内容，需要后台配置，提交接口获取
+export function PromptMessageModal(props: { onClose: () => void }) {
+  const chatStore = useChatStore();
+  const session = chatStore.currentSession();
+  const [messages, setMessages] = useState(session.messages.slice());
+
+  return (
+      <div className="modal-mask">
+        <Modal
+            title={Locale.Chat.PromptMessage.Title}
+            onClose={props.onClose}
+            actions={[
+              <IconButton
+                  text={Locale.UI.Cancel}
+                  icon={<CancelIcon />}
+                  key="cancel"
+                  onClick={() => {
+                    props.onClose();
+                  }}
+              />,
+              <IconButton
+                  type="primary"
+                  text={Locale.UI.Confirm}
+                  icon={<ConfirmIcon />}
+                  key="ok"
+                  onClick={() => {
+                    chatStore.updateCurrentSession(
+                        (session) => (session.messages = messages),
+                    );
+                    props.onClose();
+                  }}
+              />,
+            ]}
+        >
+          <List>
+            <ListItem
+                title={Locale.Chat.PromptMessage.Topic.Title}
+                subTitle={Locale.Chat.PromptMessage.Topic.SubTitle}
+            >
+              <input
+                  type="text"
+                  value={session.topic}
+                  onInput={(e) =>
+                      chatStore.updateCurrentSession(
+                          (session) => (session.topic = e.currentTarget.value),
+                      )
+                  }
+              ></input>
+            </ListItem>
+          </List>
+          <ContextPrompts
+              context={messages}
+              updateContext={(updater) => {
+                const newMessages = messages.slice();
+                updater(newMessages);
+                setMessages(newMessages);
+              }}
+          />
+        </Modal>
+      </div>
+  );
+}
 
 export function EditMessageModal(props: { onClose: () => void }) {
   const chatStore = useChatStore();
@@ -1295,6 +1357,14 @@ function _Chat() {
             setIsEditingMessage(false);
           }}
         />
+      )}
+
+      {isEditingMessage && (
+          <PromptMessageModal
+              onClose={() => {
+                setIsEditingMessage(false);
+              }}
+          />
       )}
     </div>
   );
