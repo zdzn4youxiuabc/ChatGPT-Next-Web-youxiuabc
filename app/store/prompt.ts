@@ -168,13 +168,25 @@ export const usePromptStore = createPersistStore(
           //       }) as Prompt,
           //   );
           // });
-          const arrData = res.data.map((promptList) => {
-            return {
-              id: promptList.promptId,
-              title: promptList.promptTitle,
-              content: promptList.promptStatement,
-              createdAt: Date.now(),
-            };
+          // const arrData = res.data.map((promptList: PromptList) => {
+          //   return promptList.map(
+          //   {
+          //     id: res.promptId,
+          //     title: res.promptTitle,
+          //     content: res.promptStatement,
+          //     createdAt: Date.now(),
+          //   };
+          // });
+          const arrData = res.data.map((promptList: PromptList) => {
+            return promptList.map(
+              ([title, content]) =>
+                ({
+                  id: nanoid(),
+                  title,
+                  content,
+                  createdAt: Date.now(),
+                }) as Prompt,
+            );
           });
           const userPrompts = usePromptStore.getState().getUserPrompts() ?? [];
           //
