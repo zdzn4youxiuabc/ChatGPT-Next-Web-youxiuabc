@@ -168,26 +168,25 @@ export const usePromptStore = createPersistStore(
           //       }) as Prompt,
           //   );
           // });
+          const arrDataRes = res.data.map((resD) => {
+            return {
+              id: resD.promptId,
+              title: resD.promptTitle,
+              content: resD.promptStatement,
+              createdAt: Date.now(),
+            };
+          });
           // const arrData = res.data.map((promptList: PromptList) => {
           //   return promptList.map(
-          //   {
-          //     id: res.promptId,
-          //     title: res.promptTitle,
-          //     content: res.promptStatement,
-          //     createdAt: Date.now(),
-          //   };
+          //     ([title, content]) =>
+          //       ({
+          //         id: nanoid(),
+          //         title,
+          //         content,
+          //         createdAt: Date.now(),
+          //       }) as Prompt,
+          //   );
           // });
-          const arrData = res.data.map((promptList: PromptList) => {
-            return promptList.map(
-              ([title, content]) =>
-                ({
-                  id: nanoid(),
-                  title,
-                  content,
-                  createdAt: Date.now(),
-                }) as Prompt,
-            );
-          });
           const userPrompts = usePromptStore.getState().getUserPrompts() ?? [];
           //
           // const allPromptsForSearch = builtinPrompts
@@ -195,7 +194,7 @@ export const usePromptStore = createPersistStore(
           //   .filter((v) => !!v.title && !!v.content);
           // SearchService.count.builtin = res.en.length + res.cn.length;
           // console.log('allPromptsForSearch',res.data)
-          SearchService.init(arrData, userPrompts);
+          SearchService.init(arrDataRes, userPrompts);
         });
     },
   },
