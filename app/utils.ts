@@ -6,33 +6,13 @@ export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
 export async function SpeechText(text: string) {
-  try {
-    if (window.__TAURI__) {
-      window.__TAURI__.writeText(text);
-    } else {
-      await navigator.clipboard.writeText(text);
-    }
-    const SPEECH_URL = `https://api.youxiuabc.com/api/ai/speech?content=${text}`;
-    fetch(SPEECH_URL)
-      .then((res) => res.json())
-      .then((res) => {
-        const audio = new Audio(res.data);
-        audio.play();
-      });
-  } catch (error) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand("copy");
-      showToast(Locale.Copy.Success);
-    } catch (error) {
-      showToast(Locale.Copy.Failed);
-    }
-    document.body.removeChild(textArea);
-  }
+  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/speech?content=${text}`;
+  fetch(SPEECH_URL)
+    .then((res) => res.json())
+    .then((res) => {
+      const audio = new Audio(res.data);
+      audio.play();
+    });
 }
 export async function copyToClipboard(text: string) {
   try {
