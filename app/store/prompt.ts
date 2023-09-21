@@ -168,11 +168,11 @@ export const usePromptStore = createPersistStore(
           //       }) as Prompt,
           //   );
           // });
-          const arrData = res.data.map((promptList) => {
+          const arrData = res.data.map((list: any) => {
             return {
-              id: promptList.promptId,
-              title: promptList.promptTitle,
-              content: promptList.promptStatement,
+              id: list.promptId,
+              title: list.promptTitle,
+              content: list.promptStatement,
               createdAt: Date.now(),
             };
           });
