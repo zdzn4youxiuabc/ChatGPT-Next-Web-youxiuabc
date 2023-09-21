@@ -168,25 +168,14 @@ export const usePromptStore = createPersistStore(
           //       }) as Prompt,
           //   );
           // });
-          const arrDataRes = res.data.map((resD) => {
+          const arrData = res.data.map((promptList) => {
             return {
-              id: resD.promptId,
-              title: resD.promptTitle,
-              content: resD.promptStatement,
+              id: promptList.promptId,
+              title: promptList.promptTitle,
+              content: promptList.promptStatement,
               createdAt: Date.now(),
             };
           });
-          // const arrData = res.data.map((promptList: PromptList) => {
-          //   return promptList.map(
-          //     ([title, content]) =>
-          //       ({
-          //         id: nanoid(),
-          //         title,
-          //         content,
-          //         createdAt: Date.now(),
-          //       }) as Prompt,
-          //   );
-          // });
           const userPrompts = usePromptStore.getState().getUserPrompts() ?? [];
           //
           // const allPromptsForSearch = builtinPrompts
@@ -194,7 +183,7 @@ export const usePromptStore = createPersistStore(
           //   .filter((v) => !!v.title && !!v.content);
           // SearchService.count.builtin = res.en.length + res.cn.length;
           // console.log('allPromptsForSearch',res.data)
-          SearchService.init(arrDataRes, userPrompts);
+          SearchService.init(arrData, userPrompts);
         });
     },
   },
