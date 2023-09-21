@@ -12,20 +12,13 @@ export async function SpeechText(text: string) {
     } else {
       await navigator.clipboard.writeText(text);
     }
-      const url = `https://api.youxiuabc.com/api/ai/speech?content=${ text }`;
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
-      xhr.send();
-      xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-          const data = JSON.parse(xhr.responseText);
-          console.log(data);
-          const audio = new Audio(data.data);
-          audio.play();
-        }else {
-          console.log(xhr.responseText);
-        }
-      }
+    const SPEECH_URL = `https://api.youxiuabc.com/api/ai/speech?content=${text}`;
+    fetch(SPEECH_URL)
+      .then((res) => res.json())
+      .then((res) => {
+        const audio = new Audio(res.data);
+        audio.play();
+      });
   } catch (error) {
     const textArea = document.createElement("textarea");
     textArea.value = text;
