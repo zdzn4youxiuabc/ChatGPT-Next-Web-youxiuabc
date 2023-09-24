@@ -6,7 +6,7 @@ export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
 export async function SpeechText(text: string) {
-  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/speech?content=${text}`;
+  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
