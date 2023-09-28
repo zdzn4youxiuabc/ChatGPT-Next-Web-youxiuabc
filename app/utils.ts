@@ -12,19 +12,38 @@ export async function SpeechText(text: string, i: any) {
     .then((res) => {
       const audio = new Audio(res.data.path);
       audio.play();
-      // 获取它的节点
-      const sty = document.getElementsByClassName("markdown-body");
-      const bo = sty[i];
-      const subText = res.data.subtitles;
-      let t = "";
-      // 返回字段根据状态把节点数据更换
-      subText.forEach((res: any) => {
-        let sub = `<span style="color: red">${res.text}</span>` + "&nbsp;";
-        setTimeout(function () {
-          bo.innerHTML = t += sub;
-        }, 3000);
-      });
+      scroll(res.data.subtitles, i);
+      // // 获取它的节点
+      // const sty = document.getElementsByClassName("markdown-body");
+      // const bo = sty[i];
+      // const subText = res.data.subtitles;
+      // let t = "";
+      // // 返回字段根据状态把节点数据更换
+      // subText.forEach((res: any) => {
+      //   let sub = `<span style="color: red">${res.text}</span>` + "&nbsp;";
+      //   setTimeout(function () {
+      //     bo.innerHTML = t += sub;
+      //   }, 3000);
+      // });
     });
+}
+
+function scroll(str, j) {
+  for (let i = 0; i < str.length; i++) {
+    let msg = "";
+    setTimeout(() => {
+      msg += str[i];
+      let sty = document.getElementsByClassName("markdown-body")[j];
+      let sub = `<span style="color: red">${str[i].text}</span>` + "&nbsp;";
+      sty.innerHTML = sub;
+      if (i == str.length - 1) {
+        setTimeout(() => {
+          msg = "";
+          scroll(str, j);
+        }, 5000);
+      }
+    }, i * 1000);
+  }
 }
 export async function copyToClipboard(text: string) {
   try {
