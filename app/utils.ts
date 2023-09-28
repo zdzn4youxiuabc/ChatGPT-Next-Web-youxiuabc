@@ -10,18 +10,19 @@ export async function SpeechText(text: string, i: any) {
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
-      const audio = new Audio(res.data);
+      const audio = new Audio(res.data.path);
       audio.play();
       // 获取它的节点
       const sty = document.getElementsByClassName("markdown-body");
-      console.log(sty);
-      console.log("i", i);
       const bo = sty[i];
-      bo.innerHTML =
-        '<p style="color: #5a1e02">CE测试文本单节点颜色发生改变</p>';
+      const subText = res.data.subtitles;
       // 返回字段根据状态把节点数据更换
-
-      // 再以循环的形式以1000m来进行输出，更换颜色
+      subText.forEach((res: any) => {
+        // 再以循环的形式以1000m来进行输出，更换颜色
+        setTimeout(function () {
+          bo.innerHTML = `<p style="color: red">${res.text}</p> +`;
+        }, 500);
+      });
     });
 }
 export async function copyToClipboard(text: string) {
