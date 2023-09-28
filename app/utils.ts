@@ -19,11 +19,11 @@ export async function SpeechText(text: string, i: any) {
       let t = "";
       // 返回字段根据状态把节点数据更换
       subText.forEach((res: any) => {
-        const sub = `<span style="color: red">${res.text}</span>` + "&nbsp;";
+        let sub = `<span style="color: red">${res.text}</span>` + "&nbsp;";
         // 再以循环的形式以1000m来进行输出，更换颜色
         setTimeout(
           function () {
-            bo.innerHTML = t.concat(sub);
+            bo.innerHTML = t += sub;
           },
           (res.end_time - res.begin_time) / 1000,
         );
