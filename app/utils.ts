@@ -16,11 +16,13 @@ export async function SpeechText(text: string, i: any) {
       const sty = document.getElementsByClassName("markdown-body");
       const bo = sty[i];
       const subText = res.data.subtitles;
+      let t = "";
       // 返回字段根据状态把节点数据更换
       subText.forEach((res: any) => {
         // 再以循环的形式以1000m来进行输出，更换颜色
         setTimeout(function () {
-          bo.innerHTML = `<p style="color: red">${res.text}</p> +`;
+          const sub = `<p style="color: red">${res.text}</p>`;
+          bo.innerHTML = t += sub;
         }, 500);
       });
     });
