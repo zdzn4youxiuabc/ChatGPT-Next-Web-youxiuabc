@@ -33,9 +33,8 @@ function scroll(str: any, j: any) {
     let msg = "";
     setTimeout(() => {
       msg += str[i].text;
-      let sty = document.getElementsByClassName("markdown-body")[j];
-      let sub = `<span style="color: red">${msg}</span>` + "&nbsp;";
-      sty.innerHTML = sub;
+      document.getElementsByClassName("markdown-body")[j].innerHTML =
+        `<span style="color: red">${msg}</span>` + "&nbsp;";
       if (i == str.length - 1) {
         setTimeout(() => {
           msg = "";
