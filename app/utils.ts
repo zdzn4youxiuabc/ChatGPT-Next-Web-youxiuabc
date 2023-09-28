@@ -38,7 +38,7 @@ function scroll(str: any, j: any) {
           j
         ].innerHTML = `<span style="color: red">${msg}</span>`;
       },
-      1000 + (str[i].end_time - str[i].begin_time) / 1000,
+      (str[i].end_time - str[i].begin_time) * 1000,
     );
   }
 }
