@@ -21,9 +21,9 @@ export async function SpeechText(text: string, i: any) {
       subText.forEach((res: any) => {
         // 再以循环的形式以1000m来进行输出，更换颜色
         setTimeout(function () {
-          const sub = `<p style="color: red">${res.text}</p>`;
+          const sub = `<span style="color: red">${res.text}</span>` + "";
           bo.innerHTML = t += sub;
-        }, 500);
+        }, 1000);
       });
     });
 }
