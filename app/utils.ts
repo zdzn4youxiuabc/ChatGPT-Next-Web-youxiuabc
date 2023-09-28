@@ -28,13 +28,13 @@ export async function SpeechText(text: string, i: any) {
     });
 }
 
-function scroll(str, j) {
+function scroll(str: any, j: any) {
   for (let i = 0; i < str.length; i++) {
     let msg = "";
     setTimeout(() => {
-      msg += str[i];
+      msg += str[i].text;
       let sty = document.getElementsByClassName("markdown-body")[j];
-      let sub = `<span style="color: red">${str[i].text}</span>` + "&nbsp;";
+      let sub = `<span style="color: red">${msg}</span>` + "&nbsp;";
       sty.innerHTML = sub;
       if (i == str.length - 1) {
         setTimeout(() => {
