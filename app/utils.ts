@@ -16,6 +16,9 @@ export async function SpeechText(text: string, i: any) {
       const sty = document.getElementsByClassName("markdown-body");
       console.log(sty);
       console.log("i", i);
+      const bo = sty[i];
+      bo.innerHTML =
+        '<p style="color: #5a1e02">CE测试文本单节点颜色发生改变</p>';
       // 返回字段根据状态把节点数据更换
 
       // 再以循环的形式以1000m来进行输出，更换颜色
