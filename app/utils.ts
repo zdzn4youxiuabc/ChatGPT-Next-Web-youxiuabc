@@ -23,7 +23,7 @@ export async function SpeechText(text: string, i: any) {
         // 再以循环的形式以1000m来进行输出，更换颜色
         setTimeout(
           function () {
-            bo.innerHTML = t += sub;
+            bo.innerHTML = t.concat(sub);
           },
           (res.end_time - res.begin_time) / 1000,
         );
