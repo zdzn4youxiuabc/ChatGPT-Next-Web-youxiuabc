@@ -12,6 +12,12 @@ export async function SpeechText(text: string) {
     .then((res) => {
       const audio = new Audio(res.data);
       audio.play();
+      // 获取它的节点
+      const sty = document.getElementsByClassName("markdown-body");
+      console.log(sty);
+      // 返回字段根据状态把节点数据更换
+
+      // 再以循环的形式以1000m来进行输出，更换颜色
     });
 }
 export async function copyToClipboard(text: string) {
