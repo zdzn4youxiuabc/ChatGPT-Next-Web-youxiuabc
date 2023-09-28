@@ -52,7 +52,8 @@ import {
   copyToClipboard,
   selectOrCopy,
   autoGrowTextArea,
-  useMobileScreen, SpeechText,
+  useMobileScreen,
+  SpeechText,
 } from "../utils";
 
 import dynamic from "next/dynamic";
@@ -89,6 +90,7 @@ import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { getClientConfig } from "../config/client";
+import { event } from "next/dist/build/output/log";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -543,59 +545,59 @@ export function PromptMessageModal(props: { onClose: () => void }) {
   const [messages, setMessages] = useState(session.messages.slice());
 
   return (
-      <div className="modal-mask">
-        <Modal
-            title={Locale.Chat.PromptMessage.Title}
-            onClose={props.onClose}
-            actions={[
-              <IconButton
-                  text={Locale.UI.Cancel}
-                  icon={<CancelIcon />}
-                  key="cancel"
-                  onClick={() => {
-                    props.onClose();
-                  }}
-              />,
-              <IconButton
-                  type="primary"
-                  text={Locale.UI.Confirm}
-                  icon={<ConfirmIcon />}
-                  key="ok"
-                  onClick={() => {
-                    chatStore.updateCurrentSession(
-                        (session) => (session.messages = messages),
-                    );
-                    props.onClose();
-                  }}
-              />,
-            ]}
-        >
-          <List>
-            <ListItem
-                title={Locale.Chat.PromptMessage.Topic.Title}
-                subTitle={Locale.Chat.PromptMessage.Topic.SubTitle}
-            >
-              <input
-                  type="text"
-                  value={session.topic}
-                  onInput={(e) =>
-                      chatStore.updateCurrentSession(
-                          (session) => (session.topic = e.currentTarget.value),
-                      )
-                  }
-              ></input>
-            </ListItem>
-          </List>
-          <ContextPrompts
-              context={messages}
-              updateContext={(updater) => {
-                const newMessages = messages.slice();
-                updater(newMessages);
-                setMessages(newMessages);
-              }}
-          />
-        </Modal>
-      </div>
+    <div className="modal-mask">
+      <Modal
+        title={Locale.Chat.PromptMessage.Title}
+        onClose={props.onClose}
+        actions={[
+          <IconButton
+            text={Locale.UI.Cancel}
+            icon={<CancelIcon />}
+            key="cancel"
+            onClick={() => {
+              props.onClose();
+            }}
+          />,
+          <IconButton
+            type="primary"
+            text={Locale.UI.Confirm}
+            icon={<ConfirmIcon />}
+            key="ok"
+            onClick={() => {
+              chatStore.updateCurrentSession(
+                (session) => (session.messages = messages),
+              );
+              props.onClose();
+            }}
+          />,
+        ]}
+      >
+        <List>
+          <ListItem
+            title={Locale.Chat.PromptMessage.Topic.Title}
+            subTitle={Locale.Chat.PromptMessage.Topic.SubTitle}
+          >
+            <input
+              type="text"
+              value={session.topic}
+              onInput={(e) =>
+                chatStore.updateCurrentSession(
+                  (session) => (session.topic = e.currentTarget.value),
+                )
+              }
+            ></input>
+          </ListItem>
+        </List>
+        <ContextPrompts
+          context={messages}
+          updateContext={(updater) => {
+            const newMessages = messages.slice();
+            updater(newMessages);
+            setMessages(newMessages);
+          }}
+        />
+      </Modal>
+    </div>
   );
 }
 
@@ -1250,9 +1252,9 @@ function _Chat() {
                                 onClick={() => onPinMessage(message)}
                               />
                               <ChatAction
-                                  text={Locale.Chat.Actions.Speech}
-                                  icon={<RobotIcon />}
-                                  onClick={() => SpeechText(message.content)}
+                                text={Locale.Chat.Actions.Speech}
+                                icon={<RobotIcon />}
+                                onClick={() => SpeechText(message.content, i)}
                               />
                               <ChatAction
                                 text={Locale.Chat.Actions.Copy}
@@ -1360,11 +1362,11 @@ function _Chat() {
       )}
 
       {isEditingMessage && (
-          <PromptMessageModal
-              onClose={() => {
-                setIsEditingMessage(false);
-              }}
-          />
+        <PromptMessageModal
+          onClose={() => {
+            setIsEditingMessage(false);
+          }}
+        />
       )}
     </div>
   );

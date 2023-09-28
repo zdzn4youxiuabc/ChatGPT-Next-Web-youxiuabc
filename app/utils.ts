@@ -5,7 +5,7 @@ import Locale from "./locales";
 export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
-export async function SpeechText(text: string) {
+export async function SpeechText(text: string, i: any) {
   const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
@@ -15,6 +15,7 @@ export async function SpeechText(text: string) {
       // 获取它的节点
       const sty = document.getElementsByClassName("markdown-body");
       console.log(sty);
+      console.log("i", i);
       // 返回字段根据状态把节点数据更换
 
       // 再以循环的形式以1000m来进行输出，更换颜色
