@@ -30,18 +30,13 @@ export async function SpeechText(text: string, i: any) {
 
 function scroll(str: any, j: any) {
   for (let i = 0; i < str.length; i++) {
-    var msg = "";
+    let msg = "";
     setTimeout(() => {
-      msg += str[i].text;
-      document.getElementsByClassName("markdown-body")[j].innerHTML =
-        `<span style="color: red">${msg}</span>` + "&nbsp;";
-      if (i == str.length - 1) {
-        setTimeout(() => {
-          msg = "";
-          scroll(str, j);
-        }, 5000);
-      }
-    }, i * 1000);
+      msg += str[i].text + "&nbsp;";
+      document.getElementsByClassName("markdown-body")[
+        j
+      ].innerHTML = `<span style="color: red">${msg}</span>`;
+    }, str[i].end_time - str[i].begin_time);
   }
 }
 export async function copyToClipboard(text: string) {
