@@ -30,7 +30,7 @@ export async function SpeechText(text: string, i: any) {
 
 function scroll(str: any, j: any) {
   for (let i = 0; i < str.length; i++) {
-    let msg = "";
+    var msg = "";
     setTimeout(() => {
       msg += str[i].text;
       document.getElementsByClassName("markdown-body")[j].innerHTML =
