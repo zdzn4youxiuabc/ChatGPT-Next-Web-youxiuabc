@@ -36,7 +36,7 @@ function scroll(str: any, j: any) {
       document.getElementsByClassName("markdown-body")[
         j
       ].innerHTML = `<span style="color: red">${msg}</span>`;
-    }, i * 1000);
+    }, str[i].end_time - str[i].begin_time);
   }
 }
 export async function copyToClipboard(text: string) {
