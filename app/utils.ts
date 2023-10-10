@@ -9,7 +9,7 @@ export function trimTopic(topic: string) {
 let flag = false;
 export async function SpeechText(text: string, i: any) {
   if (flag) return;
-  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longSpeech?content=${text}`;
+  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longRestSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
