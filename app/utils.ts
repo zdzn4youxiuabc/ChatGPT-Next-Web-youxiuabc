@@ -27,8 +27,31 @@ export async function SpeechText(text: string, i: any) {
       // });
     });
 }
-
 function scroll(str: any, j: any) {
+  const strCopy = JSON.parse(JSON.stringify(str));
+  let index = 0;
+  var msgArr: any[] = [];
+  const timer = setInterval(() => {
+    index += 1;
+    const time = index * 100;
+    if (time > str[str.length - 1].begin_time || !strCopy?.length) {
+      clearInterval(timer);
+    }
+    if (time > str[0].begin_time) {
+      const obj = strCopy.shift();
+      msgArr.push(obj);
+      const msg = msgArr.map((item: any) => item?.text).join(" ");
+      const msg1 = strCopy.map((item: any) => item.text).join(" ");
+      setTimeout(() => {
+        document.getElementsByClassName("markdown-body")[
+          j
+        ].innerHTML = `<span style="color: red">${msg}</span><span>${msg1}</span>`;
+      }, obj.begin_time);
+    }
+  }, 10);
+}
+
+function scrollV1(str: any, j: any) {
   for (let i = 0; i < str.length; i++) {
     var msg = "";
     setTimeout(() => {
