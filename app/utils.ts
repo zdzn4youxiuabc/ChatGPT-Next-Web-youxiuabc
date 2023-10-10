@@ -5,28 +5,24 @@ import Locale from "./locales";
 export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
+
+let flag = false;
 export async function SpeechText(text: string, i: any) {
+  if (flag) return;
   const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
       const audio = new Audio(res.data.path);
       audio.play();
+      flag = true;
+      audio.onended = () => {
+        flag = false;
+      };
       scroll(res.data.subtitles, i);
-      // // 获取它的节点
-      // const sty = document.getElementsByClassName("markdown-body");
-      // const bo = sty[i];
-      // const subText = res.data.subtitles;
-      // let t = "";
-      // // 返回字段根据状态把节点数据更换
-      // subText.forEach((res: any) => {
-      //   let sub = `<span style="color: red">${res.text}</span>` + "&nbsp;";
-      //   setTimeout(function () {
-      //     bo.innerHTML = t += sub;
-      //   }, 3000);
-      // });
     });
 }
+
 function scroll(str: any, j: any) {
   const strCopy = JSON.parse(JSON.stringify(str));
   let index = 0;
