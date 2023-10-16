@@ -55,8 +55,8 @@ function scroll(str: any, j: any) {
     if (time > str[0].begin_time) {
       const obj = strCopy.shift();
       msgArr.push(obj);
-      const msg = msgArr.map((item: any) => item?.text).join(" ");
-      const msg1 = strCopy.map((item: any) => item.text).join(" ");
+      const msg = msgArr.map((item: any) => item?.text).join("");
+      const msg1 = strCopy.map((item: any) => item.text).join("");
       setTimeout(() => {
         document.getElementsByClassName("markdown-body")[
           j
