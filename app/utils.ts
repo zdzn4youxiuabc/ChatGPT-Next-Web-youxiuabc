@@ -16,8 +16,10 @@ function createMask() {
 }
 function hideMask() {
   var mask = document.querySelector(".mask-content");
-  mask.style.display = "none";
-  document.body.removeChild(mask);
+  if (mask) {
+    mask.style.display = "none";
+    document.body.removeChild(mask);
+  }
 }
 let flag = false;
 export async function SpeechText(text: string, i: any) {
