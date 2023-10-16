@@ -15,7 +15,7 @@ function createMask() {
   document.body.appendChild(maskDiv);
 }
 function hideMask() {
-  var mask = document.querySelector(".mask-content");
+  var mask = document.querySelector(".mask-content") as HTMLElement;
   if (mask) {
     mask.style.display = "none";
     document.body.removeChild(mask);
