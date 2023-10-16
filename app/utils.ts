@@ -6,13 +6,28 @@ export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
 
+function createMask() {
+  var maskDiv = document.createElement("div");
+  maskDiv.className = "mask-content";
+  maskDiv.style.cssText =
+    "height:100%;width:100%;position:fixed;_position:absolute;top:0;z-index:99999;background: rgba(0, 0, 0, 0.5);display: flex;align-items: center;justify-content: center;color: #fff;";
+  maskDiv.textContent = "加载中...";
+  document.body.appendChild(maskDiv);
+}
+function hideMask() {
+  var mask = document.querySelector(".mask-content");
+  mask.style.display = "none";
+  document.body.removeChild(mask);
+}
 let flag = false;
 export async function SpeechText(text: string, i: any) {
   if (flag) return;
+  createMask();
   const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longRestSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
+      hideMask();
       const audio = new Audio(res.data.path);
       audio.play();
       flag = true;
@@ -20,9 +35,11 @@ export async function SpeechText(text: string, i: any) {
         flag = false;
       };
       scroll(res.data.subtitles, i);
+    })
+    .catch((err) => {
+      hideMask();
     });
 }
-
 function scroll(str: any, j: any) {
   const strCopy = JSON.parse(JSON.stringify(str));
   let index = 0;
