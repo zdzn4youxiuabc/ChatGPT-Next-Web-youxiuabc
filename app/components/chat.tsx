@@ -34,6 +34,8 @@ import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
 import RobotIcon from "../icons/robot.svg";
+import PauseCircleIcon from "../icons/pauseCircle.svg";
+import PlayCircleIcon from "../icons/playCircle.svg";
 
 import {
   ChatMessage,
@@ -54,6 +56,7 @@ import {
   autoGrowTextArea,
   useMobileScreen,
   SpeechText,
+  playType,
 } from "../utils";
 
 import dynamic from "next/dynamic";
@@ -1079,6 +1082,27 @@ function _Chat() {
   // edit / insert message modal
   const [isEditingMessage, setIsEditingMessage] = useState(false);
 
+  const [status, setStatus] = useState(2);
+  const [cid, setCid] = useState("");
+
+  useEffect(() => {
+    console.log("[Chat] status: ", status);
+  }, [status]);
+
+  const getIconAndAction = (id: any) => {
+    console.log("[Chat] status: ", status);
+    if (cid === id) {
+      if (status === playType.stop) {
+        return { icon: <RobotIcon />, action: playType.play };
+      } else if (status === playType.play) {
+        return { icon: <PauseCircleIcon />, action: playType.pause };
+      } else {
+        return { icon: <PlayCircleIcon />, action: playType.play };
+      }
+    }
+    return { icon: <RobotIcon />, action: playType.play };
+  };
+
   // remember unfinished input
   useEffect(() => {
     // try to load from local storage
@@ -1253,9 +1277,22 @@ function _Chat() {
                               />
                               <ChatAction
                                 text={Locale.Chat.Actions.Speech}
-                                icon={<RobotIcon />}
-                                onClick={() => SpeechText(message.content, i)}
+                                icon={getIconAndAction(message.id).icon}
+                                onClick={() => {
+                                  // const { action } = getIconAndAction(
+                                  //   message.id,
+                                  // );
+                                  setCid(message.id);
+                                  setStatus(playType.play);
+                                  SpeechText(
+                                    message.content,
+                                    i,
+                                    message.id,
+                                    setStatus,
+                                  );
+                                }}
                               />
+
                               <ChatAction
                                 text={Locale.Chat.Actions.Copy}
                                 icon={<CopyIcon />}

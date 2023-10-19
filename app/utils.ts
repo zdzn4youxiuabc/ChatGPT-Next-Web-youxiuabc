@@ -21,32 +21,60 @@ function hideMask() {
     document.body.removeChild(mask);
   }
 }
-let flag = false;
-export async function SpeechText(text: string, i: any) {
-  if (flag) return;
+export enum playType {
+  play = 0,
+  pause = 1,
+  stop = 2,
+}
+let audio: any = null;
+let id: any = null;
+let timer: any = null;
+let title: any = null;
+let index = 0;
+export const SpeechText = (text: string, i: any, cid: any, cb: any) => {
+  if (id === cid) {
+    cb(!audio.paused ? playType.pause : playType.play);
+    if (audio.paused) {
+      audio.play();
+      scroll(title, i);
+    } else {
+      audio.pause();
+      clearInterval(timer);
+    }
+    return;
+  }
+  if (id && audio) {
+    id = null;
+    audio.pause();
+    audio = null;
+  }
   createMask();
   const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longRestSpeech?content=${text}`;
   fetch(SPEECH_URL)
     .then((res) => res.json())
     .then((res) => {
       hideMask();
-      const audio = new Audio(res.data.path);
+      audio = new Audio(res.data.path);
       audio.play();
-      flag = true;
+      id = cid;
       audio.onended = () => {
-        flag = false;
+        audio = null;
+        id = null;
+        cb(2);
       };
-      scroll(res.data.subtitles, i);
+      title = res.data.subtitles;
+      index = 0;
+      scroll(title, i);
     })
     .catch((err) => {
       hideMask();
     });
-}
+};
 function scroll(str: any, j: any) {
   const strCopy = JSON.parse(JSON.stringify(str));
-  let index = 0;
   var msgArr: any[] = [];
-  const timer = setInterval(() => {
+  timer && clearInterval(timer);
+  timer = setInterval(() => {
     index += 1;
     const time = index * 100;
     if (time > str[str.length - 1].begin_time || !strCopy?.length) {
