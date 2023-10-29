@@ -6,28 +6,90 @@ export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
 
-let flag = false;
-export async function SpeechText(text: string, i: any) {
-  if (flag) return;
-  const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longRestSpeech?content=${text}`;
-  fetch(SPEECH_URL)
-    .then((res) => res.json())
-    .then((res) => {
-      const audio = new Audio(res.data.path);
-      audio.play();
-      flag = true;
-      audio.onended = () => {
-        flag = false;
-      };
-      scroll(res.data.subtitles, i);
-    });
+function createMask() {
+  var maskDiv = document.createElement("div");
+  maskDiv.className = "mask-content";
+  maskDiv.style.cssText =
+    "height:100%;width:100%;position:fixed;_position:absolute;top:0;z-index:99999;background: rgba(0, 0, 0, 0.5);display: flex;align-items: center;justify-content: center;color: #fff;";
+  maskDiv.textContent = "加载中...";
+  document.body.appendChild(maskDiv);
 }
-
+function hideMask() {
+  var mask = document.querySelector(".mask-content") as HTMLElement;
+  if (mask) {
+    mask.style.display = "none";
+    document.body.removeChild(mask);
+  }
+}
+export enum playType {
+  play = 0,
+  pause = 1,
+  stop = 2,
+}
+let audio: any = null;
+let id: any = null;
+let timer: any = null;
+let title: any = null;
+let index = 0;
+let lastIdx = "";
+let lastTitle = "";
+export const SpeechText = (text: string, i: any, cid: any, cb: any) => {
+  setTimeout(() => {
+    timer && clearInterval(timer);
+    timer1 && clearInterval(timer1);
+    console.log(1111111, timer1);
+    if (id === cid) {
+      cb(!audio.paused ? playType.pause : playType.play);
+      if (audio.paused) {
+        audio.play();
+        scroll(title, i);
+      } else {
+        audio.pause();
+        clearInterval(timer);
+      }
+      return;
+    } else if (id && audio && lastIdx !== "") {
+      id = null;
+      audio.pause();
+      audio = null;
+      document.getElementsByClassName("markdown-body")[
+        Number(lastIdx)
+      ].innerHTML = lastTitle;
+    }
+    createMask();
+    lastIdx = i;
+    lastTitle = text;
+    const SPEECH_URL = `https://api.youxiuabc.com/api/ai/longRestSpeech?content=${text}`;
+    fetch(SPEECH_URL)
+      .then((res) => res.json())
+      .then((res) => {
+        hideMask();
+        audio = new Audio(res.data.path);
+        audio.play();
+        id = cid;
+        audio.onended = () => {
+          audio = null;
+          timer && clearInterval(timer);
+          timer1 && clearInterval(timer1);
+          cb(2);
+        };
+        title = res.data.subtitles;
+        index = 0;
+        scroll(title, i);
+      })
+      .catch((err) => {
+        hideMask();
+      });
+  }, 10);
+};
+let timer1: any = null;
 function scroll(str: any, j: any) {
   const strCopy = JSON.parse(JSON.stringify(str));
-  let index = 0;
+  console.log(str);
   var msgArr: any[] = [];
-  const timer = setInterval(() => {
+  timer && clearInterval(timer);
+  timer1 && clearInterval(timer1);
+  timer = setInterval(() => {
     index += 1;
     const time = index * 100;
     if (time > str[str.length - 1].begin_time || !strCopy?.length) {
@@ -36,15 +98,15 @@ function scroll(str: any, j: any) {
     if (time > str[0].begin_time) {
       const obj = strCopy.shift();
       msgArr.push(obj);
-      const msg = msgArr.map((item: any) => item?.text).join(" ");
-      const msg1 = strCopy.map((item: any) => item.text).join(" ");
-      setTimeout(() => {
+      const msg = msgArr.map((item: any) => item?.text).join("");
+      const msg1 = strCopy.map((item: any) => item.text).join("");
+      timer1 = setTimeout(() => {
         document.getElementsByClassName("markdown-body")[
           j
         ].innerHTML = `<span style="color: red">${msg}</span><span>${msg1}</span>`;
       }, obj.begin_time);
     }
-  }, 10);
+  }, 500);
 }
 
 function scrollV1(str: any, j: any) {
